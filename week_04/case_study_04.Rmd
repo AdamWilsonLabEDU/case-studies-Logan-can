@@ -1,7 +1,7 @@
 ---
 title: "Case Study 04"
-author: Your Name
-date: August 1, 2020
+author: Logan Hales
+date: September 23, 2024
 output: github_document
 ---
 
@@ -10,7 +10,31 @@ output: github_document
 Comments
 
 ```{r}
-summary(cars)
+library(tidyverse)
+library(nycflights13)
+airlines
+airports
+planes
+weather
+flights
+
+view(dist)
+str(dist)
+head(dist)
+
+arrange(flights)
+view(flights)
+
+ view(airports)
+flight_distance <- flights%>%
+arrange(distance)
+?slice
+flight_distance_max <- flight_distance%>%
+  slice_max(distance)
+flight_distance_max%>%
+  left_join(airports, c("dest" = "faa"))
+
+
 ```
 
 ## Second Header
