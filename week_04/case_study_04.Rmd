@@ -17,7 +17,7 @@ airports
 planes
 weather
 flights
-
+#load in the necessary data to join later, and necessary library
 view(dist)
 str(dist)
 head(dist)
@@ -31,27 +31,20 @@ view(flights)
 
  flight_distance <- flights%>%
 arrange(distance)
-
+#associate flights with new data set as a means to present the distance and name columns with each other
  ?slice
 
 flight_distance_max <- flight_distance%>%
   slice_max(distance)
-
+#slice the maximum distance to find the airports that are the farthest apart
 flight_distance_max%>%
   left_join(airports, c("dest" = "faa"))
-
+#left join to match connect the faa and dest values to organize the largest distance 
 flight_distance_max%>%
-  select(distance)
-
+  select(dest)
+#section of dest for analysis
 as.character(flight_distance_max)
-
-airports %>%
-  semi_join(flights, c("faa" = "dest")) %>%
-  ggplot(aes(lon, lat)) +
-    borders("state") +
-    geom_point() +
-    coord_quickmap()
-
+#needed single value
 ```
 
 ## Second Header
@@ -61,10 +54,4 @@ Comments
 ```{r}
 plot(pressure)
 
-airports %>%
-  semi_join(flights, c("faa" = "dest")) %>%
-  ggplot(aes(lon, lat)) +
-    borders("state") +
-    geom_point() +
-    coord_quickmap()
 ```
