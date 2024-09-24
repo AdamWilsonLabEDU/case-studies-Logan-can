@@ -22,18 +22,35 @@ view(dist)
 str(dist)
 head(dist)
 
+view(planes)
+
 arrange(flights)
 view(flights)
 
  view(airports)
-flight_distance <- flights%>%
+
+ flight_distance <- flights%>%
 arrange(distance)
-?slice
+
+ ?slice
+
 flight_distance_max <- flight_distance%>%
   slice_max(distance)
+
 flight_distance_max%>%
   left_join(airports, c("dest" = "faa"))
 
+flight_distance_max%>%
+  select(distance)
+
+as.character(flight_distance_max)
+
+airports %>%
+  semi_join(flights, c("faa" = "dest")) %>%
+  ggplot(aes(lon, lat)) +
+    borders("state") +
+    geom_point() +
+    coord_quickmap()
 
 ```
 
@@ -43,4 +60,11 @@ Comments
 
 ```{r}
 plot(pressure)
+
+airports %>%
+  semi_join(flights, c("faa" = "dest")) %>%
+  ggplot(aes(lon, lat)) +
+    borders("state") +
+    geom_point() +
+    coord_quickmap()
 ```
