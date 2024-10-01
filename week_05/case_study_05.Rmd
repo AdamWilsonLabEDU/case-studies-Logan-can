@@ -1,7 +1,46 @@
 ---
 title: "Case Study 05"
-author: Your Name
-date: August 1, 2020
+author: Logan Hales
+date: October 1, 2024
 output: github_document
 ---
- 
+library(spData)
+library(sf)
+library(tidyverse)
+library(mapproj)
+library(units)
+# library(units) #this one is optional, but can help with unit conversions.
+
+#load 'world' data from spData package
+data(world)  
+# load 'states' boundaries from spData package
+data(us_states)
+# plot(world[1])  #plot if desired
+# plot(us_states[1]) #plot if desired
+
+albers="+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+
+
+Canadas_world = world %>% 
+  filter(name_long=="Canada") %>%
+  st_transform(albers) %>%
+  st_buffer(dist = 10000)
+
+#TRANSFORM BEFRORE BUFFERING
+
+us_states_NY<- us_states %>%
+  filter(NAME == "New York")
+
+
+Canada_transform = st_transform(Canadas_world, albers)
+
+us_states_NY_transform = st_transform(us_states_NY, albers)
+
+border <- (st_intersection (Canada_transform, us_states_NY_transform))
+
+plot(border)
+
+ggplot(border)+geom_sf(data = us_states_NY_transform, fill = "grey")+geom_sf(fill="red")+labs(title = "US-Canada border 10km within NYS", subtitle ="Total area of 3,495.19 km^2") 
+
+st_area(border) %>%
+  set_units(km^2)
