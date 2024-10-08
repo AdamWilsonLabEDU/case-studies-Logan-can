@@ -45,6 +45,8 @@ flight_distance_max%>%
 #section of dest for analysis
 as.character(flight_distance_max)
 #needed single value
+farthest_airport<- flight_distance_max %>% filter(distance == max(distance)) %>% select(dest) %>% distinct()
+#code above was shown by Caroline, changed the naming conventions to find Honolulu and results were the same
 ```
 
 ## Second Header
