@@ -1,7 +1,36 @@
 ---
 title: "Case Study 06"
-author: Your Name
+author: Logan Hales
 date: August 1, 2020
 output: github_document
 ---
- 
+ library(terra)
+library(spData)
+library(tidyverse)
+library(sf)
+library(ncdf4)
+library(dplyr)
+
+
+download.file("https://crudata.uea.ac.uk/cru/data/temperature/absolute.nc","crudata.nc",method="curl")
+
+setwd("C:/Users/Owner/OneDrive/Desktop/UB/year 1/geo 511")
+
+# read in the data using the rast() function from the terra package
+tmean=rast("crudata.nc")
+plot(tmean)
+
+a <- max(tmean, na.rm = TRUE)
+
+plot(max(tmean))
+
+data(world)
+temperature <- terra::extract(a, world, fun=max, na.rm=TRUE)# small=TRUE)
+
+
+
+world_clim <- bind_cols(world, temperature)
+
+ggplot(world_clim)+geom_sf(data = world_clim, aes(fill=max))+
+  scale_fill_viridis_c(name="Maximum\nTemperature (C)")+
+  labs(title = "Hottest Continents") 
