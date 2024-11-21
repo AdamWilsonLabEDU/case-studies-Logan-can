@@ -356,9 +356,11 @@ global(lst_month,mean,na.rm=T)
 #' 
 lulc2 <- resample(lulc, lst_month, method = "near")
 ` 
-lcds1=cbind.data.frame(values(lst_month),ID=values(lulc2[[1]]))%>%na.omit()%>%
-  gather(key='month',value='value',-Land_Cover_Type_1_13)%>%
-  mutate(ID=as.numeric(Land_Cover_Type_1_13), month=factor(month,levels=month.name,ordered=TRUE)
+lcds1 = cbind.data.frame(values(lst_month),ID=values(lulc2[[1]]))%>%na.omit()
+
+#%>%
+ lcds2 <- gather(key='month',value='value',-Land_Cover_Type_1_13)%>%
+  lcds3 <- mutate(ID=as.numeric(Land_Cover_Type_1_13), month=factor(month,levels=month.name,ordered=TRUE)
 
 lcds2 %>% 
   filter(landcover%in%c("Urban & built-up","Deciduous Broadleaf forest")) %>% 
