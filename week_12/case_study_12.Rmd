@@ -21,13 +21,14 @@ d<- weather_history(c(43.00923265935055, -78.78494250958327),start = "2023-01-01
                   daily=list("temperature_2m_max","temperature_2m_min","precipitation_sum")) %>% 
   mutate(daily_temperature_2m_mean=(daily_temperature_2m_max+daily_temperature_2m_min)/2)
 ```
+
 ```{r}
 #Buff_Temp <- xts(d$daily_temperature_2m_mean,daily_temperature_2m_max,daily_temperature_2m_min, order.by=d$date)
   
 Temp_Buff <- select(d,daily_temperature_2m_min,daily_temperature_2m_mean,daily_temperature_2m_max)%>%
   xts(order.by=d$date)
   
-plot(Buff_Temp)
+plot(Temp_Buff)
 title(main ="Daily Maximum Temperature in Buffalo, NY")
 
 
@@ -57,6 +58,21 @@ plot(Buff_Temp)
 title(main ="Daily Maximum Temperature in Buffalo, NY")
 
 dygraph(Buff_Temp, main = "Daily Maximum Temperature in Buffalo, NY")%>%
+  dyRangeSelector(dateWindow = c("2023-01-01", "2024-10-31"), height = 50, 
+                                          fillColor = " #A7B1C4", strokeColor = "#808FAB", 
+                                          keepMouseZoom = TRUE,retainDateWindow = FALSE)
+```
+```{r}
+
+Precip_Buff <- select(d,daily_precipitation_sum)%>%
+  xts(order.by=d$date)
+  
+
+Buff_Precip <- xts(d$daily_precipitation_sum, order.by=d$date)
+plot(Buff_Precip)
+title(main ="Daily Precipitation in Buffalo, NY")
+
+dygraph(Buff_Precip, main = "Daily Precipitation in Buffalo, NY")%>%
   dyRangeSelector(dateWindow = c("2023-01-01", "2024-10-31"), height = 50, 
                                           fillColor = " #A7B1C4", strokeColor = "#808FAB", 
                                           keepMouseZoom = TRUE,retainDateWindow = FALSE)

@@ -36,6 +36,7 @@ library(ggmap)
 library(tidyverse)
 library(knitr)
 library(sf)
+library(dplyr)
 # New Packages
 library(ncdf4) # to import data from netcdf format
 
@@ -355,14 +356,19 @@ global(lst_month,mean,na.rm=T)
 ## Part 3: Summarize Land Surface Temperature by Land Cover
 #' 
 lulc2 <- resample(lulc, lst_month, method = "near")
-` 
-lcds1 = cbind.data.frame(values(lst_month),ID=values(lulc2[[1]]))%>%na.omit()
 
-#%>%
- lcds2 <- gather(key='month',value='value',-Land_Cover_Type_1_13)%>%
-  lcds3 <- mutate(ID=as.numeric(Land_Cover_Type_1_13), month=factor(month,levels=month.name,ordered=TRUE)
+lcds1 = cbind.data.frame(
+  values(lst_month),
+  ID=values(lulc2[[1]]))%>%
+  na.omit()
 
-lcds2 %>% 
+  lcds2 = gather(lcds1, key='month',value='value',-Land_Cover_Type_1_13)%>%
+  mutate(ID=as.numeric(Land_Cover_Type_1_13), month=factor(month,levels=month.name,ordered=TRUE))
+  
+ #lcds%>%
+  #left_join(lcd, c("" = ""))
+  
+left_join(lcd, x=landcover)%>%
   filter(landcover%in%c("Urban & built-up","Deciduous Broadleaf forest")) %>% 
   ggplot(aes(y=value,x=month))+
   facet_wrap(~landcover)+
